@@ -1,0 +1,96 @@
+
+import { Product, Category } from '@/types';
+
+export const categories: Category[] = [
+  { id: 'burgers', name: 'Burgers' },
+  { id: 'sides', name: 'Sides' },
+  { id: 'drinks', name: 'Drinks' },
+  { id: 'desserts', name: 'Desserts' },
+  { id: 'promos', name: 'Promos' },
+];
+
+export const products: Product[] = [
+  {
+    id: '1',
+    name: 'Classic Burger',
+    description: 'Our signature beef patty with lettuce, tomato, and special sauce.',
+    price: 149,
+    image: 'https://images.unsplash.com/photo-1572802419224-296b0aeee0d9?q=80&w=2030&auto=format&fit=crop',
+    category: 'burgers',
+    featured: true,
+  },
+  {
+    id: '2',
+    name: 'Cheese Burger',
+    description: 'Classic burger with melted cheddar cheese.',
+    price: 169,
+    image: 'https://images.unsplash.com/photo-1553979459-d2229ba7433b?q=80&w=2068&auto=format&fit=crop',
+    category: 'burgers',
+  },
+  {
+    id: '3',
+    name: 'Bacon Burger',
+    description: 'Beef patty with crispy bacon strips and BBQ sauce.',
+    price: 199,
+    image: 'https://images.unsplash.com/photo-1583953782403-0a329a193522?q=80&w=1974&auto=format&fit=crop',
+    category: 'burgers',
+  },
+  {
+    id: '4',
+    name: 'Double Burger',
+    description: 'Two beef patties with double cheese and all the fixings.',
+    price: 229,
+    image: 'https://images.unsplash.com/photo-1594212699903-ec8a3eca50f5?q=80&w=2071&auto=format&fit=crop',
+    category: 'burgers',
+    featured: true,
+  },
+  {
+    id: '5',
+    name: 'Crispy Fries',
+    description: 'Golden crispy fries with your choice of seasoning.',
+    price: 89,
+    image: 'https://images.unsplash.com/photo-1573080496219-bb080dd4f877?q=80&w=2074&auto=format&fit=crop',
+    category: 'sides',
+  },
+  {
+    id: '6',
+    name: 'Onion Rings',
+    description: 'Crispy battered onion rings with dipping sauce.',
+    price: 99,
+    image: 'https://images.unsplash.com/photo-1639024471283-03518883512d?q=80&w=2070&auto=format&fit=crop',
+    category: 'sides',
+  },
+  {
+    id: '7',
+    name: 'Cola',
+    description: 'Ice-cold cola in a 16oz cup.',
+    price: 49,
+    image: 'https://images.unsplash.com/photo-1622483767028-3f66f32aef97?q=80&w=2070&auto=format&fit=crop',
+    category: 'drinks',
+  },
+  {
+    id: '8',
+    name: 'Milkshake',
+    description: 'Creamy vanilla milkshake topped with whipped cream.',
+    price: 99,
+    image: 'https://images.unsplash.com/photo-1579954115545-a95591f28bfc?q=80&w=2070&auto=format&fit=crop',
+    category: 'drinks',
+  },
+  {
+    id: '9',
+    name: 'Choco Sundae',
+    description: 'Vanilla ice cream with hot fudge and nuts.',
+    price: 79,
+    image: 'https://images.unsplash.com/photo-1563805042-7684c019e1cb?q=80&w=1527&auto=format&fit=crop',
+    category: 'desserts',
+  },
+  {
+    id: '10',
+    name: 'Value Meal',
+    description: 'Classic Burger, Fries, and Drink combo.',
+    price: 249,
+    image: 'https://images.unsplash.com/photo-1594212699903-ec8a3eca50f5?q=80&w=2071&auto=format&fit=crop',
+    category: 'promos',
+    featured: true,
+  },
+];
