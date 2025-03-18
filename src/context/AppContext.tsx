@@ -1,8 +1,8 @@
+
 import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 import { CartItem, Product, User, PaymentMethod } from '@/types';
 import { products } from '@/data/mockData';
 import { toast } from '@/components/ui/use-toast';
-import { supabase } from '@/lib/supabase';
 
 interface AppContextType {
   // Cart
@@ -27,10 +27,6 @@ interface AppContextType {
   // Payment
   selectedPaymentMethod: PaymentMethod | null;
   setSelectedPaymentMethod: (method: PaymentMethod | null) => void;
-
-  // Authentication
-  isAuthenticated: boolean;
-  checkSession: () => Promise<void>;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -40,10 +36,11 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [allProducts, setAllProducts] = useState<Product[]>(products);
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<PaymentMethod | null>(null);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
+  // Calculate cart total
   const cartTotal = cart.reduce((total, item) => total + (item.product.price * item.quantity), 0);
 
+  // Load cart from local storage
   useEffect(() => {
     const savedCart = localStorage.getItem('cart');
     if (savedCart) {
@@ -55,10 +52,12 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     }
   }, []);
 
+  // Save cart to local storage
   useEffect(() => {
     localStorage.setItem('cart', JSON.stringify(cart));
   }, [cart]);
 
+  // Cart functions
   const addToCart = (product: Product, quantity = 1) => {
     setCart(prevCart => {
       const existingItem = prevCart.find(item => item.product.id === product.id);
@@ -103,6 +102,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     setCart([]);
   };
 
+  // User functions
   const login = (role: 'admin' | 'customer') => {
     setUser({
       id: '1',
@@ -115,6 +115,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     setUser(null);
   };
 
+  // Product functions
   const addProduct = (product: Product) => {
     const newProduct = { 
       ...product,
@@ -145,33 +146,6 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     });
   };
 
-  const checkSession = async () => {
-    try {
-      const { data: { session } } = await supabase.auth.getSession();
-      setIsAuthenticated(!!session);
-      if (session?.user) {
-        // Set user data if needed
-      }
-    } catch (error) {
-      console.error('Error checking auth session:', error);
-    }
-  };
-
-  useEffect(() => {
-    checkSession();
-
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setIsAuthenticated(!!session);
-      if (session?.user) {
-        // Set user data if needed
-      }
-    });
-
-    return () => {
-      subscription.unsubscribe();
-    };
-  }, []);
-
   const value = {
     cart,
     addToCart,
@@ -187,9 +161,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     updateProduct,
     deleteProduct,
     selectedPaymentMethod,
-    setSelectedPaymentMethod,
-    isAuthenticated,
-    checkSession
+    setSelectedPaymentMethod
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

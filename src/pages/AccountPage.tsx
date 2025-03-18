@@ -2,66 +2,61 @@
 import React from 'react';
 import { PageLayout } from '@/components/layout/page-layout';
 import { Button } from '@/components/ui/button';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useApp } from '@/context/AppContext';
-import { supabase } from '@/integrations/supabase/client';
-import { toast } from '@/components/ui/use-toast';
 
 const AccountPage = () => {
-  const { user, logout, isAuthenticated } = useApp();
-  const navigate = useNavigate();
+  const { user, login, logout } = useApp();
   
-  const handleLogout = async () => {
-    try {
-      const { error } = await supabase.auth.signOut();
-      if (error) throw error;
-      
-      logout();
-      toast({
-        title: "Logged out",
-        description: "You have been successfully logged out",
-      });
-      navigate('/auth');
-    } catch (error: any) {
-      toast({
-        title: "Error",
-        description: error.message,
-        variant: "destructive",
-      });
-    }
+  const handleLogin = (role: 'admin' | 'customer') => {
+    login(role);
   };
-  
-  if (!isAuthenticated) {
-    navigate('/auth');
-    return null;
-  }
   
   return (
     <PageLayout title="Account">
       <div className="p-6">
-        <div className="space-y-6">
-          <div className="flex flex-col items-center">
-            <div className="h-24 w-24 rounded-full bg-muted flex items-center justify-center text-2xl font-bold mb-3">
-              {user?.name?.charAt(0) || '?'}
+        {user ? (
+          <div className="space-y-6">
+            <div className="flex flex-col items-center">
+              <div className="h-24 w-24 rounded-full bg-muted flex items-center justify-center text-2xl font-bold mb-3">
+                {user.name.charAt(0)}
+              </div>
+              <h2 className="text-xl font-bold">{user.name}</h2>
+              <p className="text-sm text-muted-foreground capitalize">{user.role} Account</p>
             </div>
-            <h2 className="text-xl font-bold">{user?.name || 'User'}</h2>
-            <p className="text-sm text-muted-foreground capitalize">{user?.role || 'Customer'} Account</p>
-          </div>
-          
-          <div className="space-y-3">
-            {user?.role === 'admin' && (
-              <Link to="/admin">
-                <Button variant="outline" className="w-full">
-                  Admin Dashboard
-                </Button>
-              </Link>
-            )}
             
-            <Button variant="destructive" className="w-full" onClick={handleLogout}>
-              Sign Out
-            </Button>
+            <div className="space-y-3">
+              {user.role === 'admin' && (
+                <Link to="/admin">
+                  <Button variant="outline" className="w-full">
+                    Admin Dashboard
+                  </Button>
+                </Link>
+              )}
+              
+              <Button variant="destructive" className="w-full" onClick={logout}>
+                Sign Out
+              </Button>
+            </div>
           </div>
-        </div>
+        ) : (
+          <div className="space-y-6">
+            <div className="text-center mb-8">
+              <h2 className="text-2xl font-bold mb-2">Welcome!</h2>
+              <p className="text-muted-foreground">Please sign in to continue</p>
+            </div>
+            
+            <div className="space-y-3">
+              <Button className="w-full" onClick={() => handleLogin('customer')}>
+                Customer Login
+              </Button>
+              
+              <Button variant="outline" className="w-full" onClick={() => handleLogin('admin')}>
+                Admin Login
+              </Button>
+            </div>
+          </div>
+        )}
       </div>
     </PageLayout>
   );
