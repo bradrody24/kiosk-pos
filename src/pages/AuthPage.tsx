@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { PageLayout } from '@/components/layout/page-layout';
 import { Input } from '@/components/ui/input';
@@ -118,8 +117,8 @@ const AuthPage = () => {
                   maxLength={6}
                   render={({ slots }) => (
                     <InputOTPGroup className="gap-2">
-                      {slots.map((slot, idx) => (
-                        <InputOTPSlot key={idx} {...slot} />
+                      {slots.map((slot, index) => (
+                        <InputOTPSlot key={index} {...slot} index={index} />
                       ))}
                     </InputOTPGroup>
                   )}
