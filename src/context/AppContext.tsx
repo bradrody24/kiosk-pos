@@ -2,7 +2,7 @@ import React, { createContext, useContext, useState, ReactNode, useEffect } from
 import { CartItem, Product, User, PaymentMethod } from '@/types';
 import { products } from '@/data/mockData';
 import { toast } from '@/components/ui/use-toast';
-import { supabase } from '@/integrations/supabase/client';
+import { supabase } from '@/lib/supabase';
 
 interface AppContextType {
   // Cart

@@ -1,5 +1,5 @@
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import { PageLayout } from '@/components/layout/page-layout';
 import { Button } from '@/components/ui/button';
 import { Link, useNavigate } from 'react-router-dom';
@@ -11,12 +11,6 @@ const AccountPage = () => {
   const { user, logout, isAuthenticated } = useApp();
   const navigate = useNavigate();
   
-  useEffect(() => {
-    if (!isAuthenticated) {
-      navigate('/auth');
-    }
-  }, [isAuthenticated, navigate]);
-
   const handleLogout = async () => {
     try {
       const { error } = await supabase.auth.signOut();
@@ -38,6 +32,7 @@ const AccountPage = () => {
   };
   
   if (!isAuthenticated) {
+    navigate('/auth');
     return null;
   }
   
@@ -73,4 +68,3 @@ const AccountPage = () => {
 };
 
 export default AccountPage;
-
