@@ -45,7 +45,7 @@ const MenuPage = () => {
   });
   
   return (
-    <PageLayout title="Menu" showBack>
+    <PageLayout title="Menu" showBack={false}>
       <div className="p-4">
         {/* Search Bar */}
         <div className="relative mb-4">

@@ -27,6 +27,9 @@ interface AppContextType {
   // Payment
   selectedPaymentMethod: PaymentMethod | null;
   setSelectedPaymentMethod: (method: PaymentMethod | null) => void;
+
+  // Contants
+  title: string;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -146,6 +149,8 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     });
   };
 
+  const title = "Migoy's Burger Bunsuran I";
+
   const value = {
     cart,
     addToCart,
@@ -161,7 +166,8 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     updateProduct,
     deleteProduct,
     selectedPaymentMethod,
-    setSelectedPaymentMethod
+    setSelectedPaymentMethod,
+    title
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

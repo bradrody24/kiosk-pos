@@ -74,7 +74,7 @@ const CartPage = () => {
               
               <CardFooter>
                 <Link to="/checkout" className="w-full">
-                  <Button className="w-full">Proceed to Checkout</Button>
+                  <Button className="w-full">Proceed to Payment</Button>
                 </Link>
               </CardFooter>
             </Card>

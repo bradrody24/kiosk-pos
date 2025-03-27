@@ -32,7 +32,7 @@ export const products: Product[] = [
     name: 'Bacon Burger',
     description: 'Beef patty with crispy bacon strips and BBQ sauce.',
     price: 199,
-    image: 'https://images.unsplash.com/photo-1583953782403-0a329a193522?q=80&w=1974&auto=format&fit=crop',
+    image: 'https://images.unsplash.com/photo-1553979459-d2229ba7433b?q=80&w=2068&auto=format&fit=crop',
     category: 'burgers',
   },
   {

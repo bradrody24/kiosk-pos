@@ -1,0 +1,37 @@
+/* Update primary color */
+:root {
+    --primary-color: #8B0000; /* Deep Red */
+    /* ... existing variables ... */
+}
+
+/* Bottom Navigation Styles */
+.bottom-navigation {
+    background-color: hsl(0, 100%, 40%); /* Dark Red */
+    /* ... existing styles ... */
+}
+
+/* Icon and Font Color */
+.bottom-navigation .icon,
+.bottom-navigation .text {
+    color: #FFFFFF; /* Contrasting color for icons and text */
+    /* ... existing styles ... */
+}
+
+/* Button Styles */
+button {
+    background-color: var(--primary-color); /* Set button background to deep red */
+    color: #FFFFFF; /* Contrasting color for button text */
+    /* ... existing button styles ... */
+}
+
+/* Update body background color */
+body {
+    background-color: hsl(0, 100%, 40%); /* Dark Red */
+    /* ... existing styles ... */
+}
+
+/* Alternatively, if you have a specific container */
+.container {
+    background-color: hsl(0, 100%, 40%); /* Dark Red */
+    /* ... existing styles ... */
+} 
