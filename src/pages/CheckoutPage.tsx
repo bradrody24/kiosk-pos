@@ -38,7 +38,7 @@ export function CheckoutPage() {
     <PageLayout 
       title={showReceipt ? "Receipt" : "Checkout"} 
       showBack={!showReceipt}
-      showBottomNav={false}
+      showCart={false}
     >
       <div className="p-4 pb-24">
         {!showReceipt ? (

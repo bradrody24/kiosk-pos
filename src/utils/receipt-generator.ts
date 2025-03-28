@@ -18,7 +18,7 @@ export const generateReceipt = async (receipt: Receipt) => {
   
   // Header
   doc.setFontSize(10);
-  doc.text("Burger Chain", pageWidth / 2, yPos + 4, { align: 'center' });
+  doc.text("Migoy's Burger", pageWidth / 2, yPos + 4, { align: 'center' });
   yPos += 8;
 
   // Receipt details
@@ -27,6 +27,12 @@ export const generateReceipt = async (receipt: Receipt) => {
   yPos += 4;
   doc.text(`Date: ${receipt.date.toLocaleString()}`, margin, yPos);
   yPos += 6;
+
+  // Add queue number to receipt
+  doc.setFontSize(10);
+  doc.setFont(undefined, 'bold');
+  doc.text(`Queue #: ${receipt.queueNumber}`, margin, yPos);
+  yPos += 2;
 
   // Items
   autoTable(doc, {
@@ -60,6 +66,8 @@ export const generateReceipt = async (receipt: Receipt) => {
   yPos = (doc as any).lastAutoTable.finalY + 4;
 
   // Totals section
+  doc.setFontSize(8);
+  doc.setFont(undefined, 'normal');
   doc.text("Subtotal:", margin, yPos);
   doc.text(formatCurrency(receipt.subtotal), pageWidth - margin, yPos, { align: 'right' });
   yPos += 4;
@@ -82,15 +90,18 @@ export const generateReceipt = async (receipt: Receipt) => {
   doc.text(formatCurrency(receipt.amountPaid), pageWidth - margin, yPos, { align: 'right' });
   yPos += 4;
 
+  doc.setFontSize(9);
+  doc.setFont(undefined, 'bold');
   doc.text("Change:", margin, yPos);
   doc.text(formatCurrency(receipt.change), pageWidth - margin, yPos, { align: 'right' });
-  yPos += 8;
+  yPos += 6;
 
   // Footer
   doc.setFontSize(8);
+  doc.setFont(undefined, 'normal');
   doc.text("Thank you for your purchase!", pageWidth / 2, yPos, { align: 'center' });
-  yPos += 4;
-  doc.text("Please come again!", pageWidth / 2, yPos, { align: 'center' });
+  /* yPos += 4;
+  doc.text("Please come again!", pageWidth / 2, yPos, { align: 'center' }); */
 
   return doc;
 };
@@ -124,8 +135,6 @@ export const downloadReceipt = async (receipt: Receipt) => {
 
 function formatCurrency(amount: number) {
   return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   }).format(amount);

@@ -15,4 +15,5 @@ export interface Receipt {
   total: number;
   amountPaid: number;
   change: number;
+  queueNumber: string;
 } 
