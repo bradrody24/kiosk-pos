@@ -1,65 +1,115 @@
-
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { PageLayout } from '@/components/layout/page-layout';
 import { Button } from '@/components/ui/button';
-import { Link } from 'react-router-dom';
-import { useApp } from '@/context/AppContext';
+import { Card } from '@/components/ui/card';
+import { LogOut, User, Settings, Package } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { supabase } from '@/lib/supabase';
 
-const AccountPage = () => {
-  const { user, login, logout } = useApp();
-  
-  const handleLogin = (role: 'admin' | 'customer') => {
-    login(role);
+export default function AccountPage() {
+  const navigate = useNavigate();
+  const [user, setUser] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Get current user
+    const getUser = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      setUser(user);
+      setLoading(false);
+
+      if (!user) {
+        navigate('/login');
+      }
+    };
+
+    getUser();
+  }, [navigate]);
+
+  const handleSignOut = async () => {
+    await supabase.auth.signOut();
+    navigate('/login');
   };
-  
+
+  if (loading) {
+    return (
+      <PageLayout title="Account" showBack={false}>
+        <div className="p-4 text-center text-sm text-muted-foreground">
+          Loading...
+        </div>
+      </PageLayout>
+    );
+  }
+
   return (
-    <PageLayout title="Account">
-      <div className="p-6">
-        {user ? (
-          <div className="space-y-6">
-            <div className="flex flex-col items-center">
-              <div className="h-24 w-24 rounded-full bg-muted flex items-center justify-center text-2xl font-bold mb-3">
-                {user.name.charAt(0)}
-              </div>
-              <h2 className="text-xl font-bold">{user.name}</h2>
-              <p className="text-sm text-muted-foreground capitalize">{user.role} Account</p>
+    <PageLayout title="Account" showBack={false}>
+      <div className="p-4 space-y-4">
+        {/* Profile Card */}
+        <Card className="p-4">
+          <div className="flex flex-col items-center space-y-3">
+            <div className="h-20 w-20 rounded-full bg-muted flex items-center justify-center">
+              <User className="h-10 w-10 text-muted-foreground" />
             </div>
-            
-            <div className="space-y-3">
-              {user.role === 'admin' && (
-                <Link to="/admin">
-                  <Button variant="outline" className="w-full">
-                    Admin Dashboard
-                  </Button>
-                </Link>
-              )}
-              
-              <Button variant="destructive" className="w-full" onClick={logout}>
-                Sign Out
-              </Button>
+            <div className="text-center">
+              <h2 className="text-sm font-medium">
+                {user?.user_metadata?.name || 'User'}
+              </h2>
+              <p className="text-xs text-muted-foreground">{user?.email}</p>
+              <p className="text-xs text-muted-foreground">
+                Member since {new Date(user?.created_at).toLocaleDateString()}
+              </p>
             </div>
           </div>
-        ) : (
-          <div className="space-y-6">
-            <div className="text-center mb-8">
-              <h2 className="text-2xl font-bold mb-2">Welcome!</h2>
-              <p className="text-muted-foreground">Please sign in to continue</p>
+        </Card>
+
+        {/* Account Details */}
+        <Card className="p-4">
+          <div className="space-y-3">
+            <div>
+              <h3 className="text-xs font-medium text-muted-foreground">Email</h3>
+              <p className="text-sm">{user?.email}</p>
             </div>
-            
-            <div className="space-y-3">
-              <Button className="w-full" onClick={() => handleLogin('customer')}>
-                Customer Login
-              </Button>
-              
-              <Button variant="outline" className="w-full" onClick={() => handleLogin('admin')}>
-                Admin Login
-              </Button>
+            <div>
+              <h3 className="text-xs font-medium text-muted-foreground">Account ID</h3>
+              <p className="text-sm">{user?.id}</p>
             </div>
           </div>
-        )}
+        </Card>
+
+        {/* Manage Categories Button */}
+        <Card className="p-4">
+          <Button 
+            variant="outline" 
+            className="w-full h-9 text-sm"
+            onClick={() => navigate('/categories')}
+          >
+            <Settings className="mr-2 h-4 w-4" />
+            Manage Categories
+          </Button>
+        </Card>
+
+        {/* Manage Products Button */}
+        <Card className="p-4">
+          <Button 
+            variant="outline" 
+            className="w-full h-9 text-sm"
+            onClick={() => navigate('/products')}
+          >
+            <Package className="mr-2 h-4 w-4" />
+            Manage Products
+          </Button>
+        </Card>
+
+        {/* Sign Out Button */}
+        <Button 
+          variant="destructive" 
+          className="w-full h-9 text-sm"
+          onClick={handleSignOut}
+        >
+          <LogOut className="mr-2 h-4 w-4" />
+          Sign Out
+        </Button>
       </div>
     </PageLayout>
   );
-};
-
-export default AccountPage;
+}

@@ -56,7 +56,7 @@ const CartPage = () => {
               </CardHeader>
               
               <CardContent className="space-y-3">
-                <div className="flex justify-between">
+                {/* <div className="flex justify-between">
                   <span className="text-muted-foreground">Subtotal</span>
                   <PriceFormatter amount={cartTotal} />
                 </div>
@@ -64,7 +64,7 @@ const CartPage = () => {
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">Pickup Fee</span>
                   <span>Free</span>
-                </div>
+                </div> */}
                 
                 <div className="flex justify-between pt-3 border-t font-bold">
                   <span>Total</span>

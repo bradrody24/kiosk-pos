@@ -6,13 +6,13 @@ import { PriceFormatter } from '@/components/ui/price-formatter';
 import { useApp } from '@/context/AppContext';
 import { Link } from 'react-router-dom';
 import { Plus } from 'lucide-react';
-import { products } from '@/data/mockData';
+/* import { products } from '@/data/mockData'; */
 
 export default function HomePage() {
   const { addToCart, title } = useApp();
   
   // Get a random featured product
-  const featuredProduct = React.useMemo(() => {
+  /* const featuredProduct = React.useMemo(() => {
     const featuredProducts = products.filter(product => product.featured);
     if (featuredProducts.length === 0) return products[0]; // Fallback to first product if no featured ones
     const randomIndex = Math.floor(Math.random() * featuredProducts.length);
@@ -27,7 +27,7 @@ export default function HomePage() {
         </div>
       </PageLayout>
     );
-  }
+  } */
 
   return (
     <PageLayout title="Home">
@@ -40,40 +40,20 @@ export default function HomePage() {
           </p>
         </div>
 
-        {/* Featured Product */}
+        {/* Promotional Banner */}
         <div className="space-y-4">
-          <h2 className="text-xl font-semibold">Featured Product</h2>
           <Card className="overflow-hidden">
             <img 
-              src={featuredProduct.image} 
-              alt={featuredProduct.name}
-              className="w-full h-64 object-cover" // Increased height
+              src="https://images.unsplash.com/photo-1594212699903-ec8a3eca50f5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1471&q=80"
+              alt="Burger and drinks"
+              className="w-full h-80 object-cover" 
             />
-            <CardContent className="p-4">
-              <div className="flex justify-between items-start mb-2">
-                <div>
-                  <h3 className="font-semibold text-lg">{featuredProduct.name}</h3>
-                  <p className="text-muted-foreground text-sm">{featuredProduct.description}</p>
-                </div>
-                <PriceFormatter 
-                  amount={featuredProduct.price} 
-                  className="font-semibold"
-                />
-              </div>
-              <div className="flex gap-2 mt-4">
-                <Button 
-                  className="flex-1"
-                  onClick={() => addToCart(featuredProduct)}
-                >
-                  <Plus className="mr-2 h-4 w-4" />
-                  Add to Cart
+            <CardContent className="p-6">
+              <Link to="/menu" className="block">
+                <Button className="w-full text-lg">
+                  Get Started
                 </Button>
-                <Link to="/menu" className="flex-1">
-                  <Button variant="outline" className="w-full">
-                    View Menu
-                  </Button>
-                </Link>
-              </div>
+              </Link>
             </CardContent>
           </Card>
         </div>

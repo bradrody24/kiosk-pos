@@ -1,8 +1,12 @@
-
 import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 import { CartItem, Product, User, PaymentMethod } from '@/types';
-import { products } from '@/data/mockData';
-import { toast } from '@/components/ui/use-toast';
+import { supabase } from '@/lib/supabase';
+import { useToast } from '@/components/ui/use-toast';
+
+interface Category {
+  id: string;
+  name: string;
+}
 
 interface AppContextType {
   // Cart
@@ -30,18 +34,90 @@ interface AppContextType {
 
   // Contants
   title: string;
+
+  // New fields
+  categories: Category[];
+  loading: boolean;
+
+  // New function
+  createOrder: (orderData: OrderData) => Promise<any>;
+}
+
+interface OrderData {
+  total_amount: number;
+  payment_method: string;
+  payment_status: string;
+  items: {
+    product_id: string;
+    quantity: number;
+    unit_price: number;
+    subtotal: number;
+  }[];
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
-export const AppProvider = ({ children }: { children: ReactNode }) => {
+export function AppProvider({ children }: { children: ReactNode }) {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [user, setUser] = useState<User | null>(null);
-  const [allProducts, setAllProducts] = useState<Product[]>(products);
+  const [allProducts, setAllProducts] = useState<Product[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<PaymentMethod | null>(null);
+  const [loading, setLoading] = useState(true);
+  const { toast } = useToast();
 
   // Calculate cart total
   const cartTotal = cart.reduce((total, item) => total + (item.product.price * item.quantity), 0);
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    try {
+      // Fetch categories
+      const { data: categoriesData, error: categoriesError } = await supabase
+        .from('categories')
+        .select('id, name');
+
+      if (categoriesError) throw categoriesError;
+
+      // Fetch products with category details
+      const { data: productsData, error: productsError } = await supabase
+        .from('products')
+        .select(`
+          id,
+          name,
+          description,
+          price,
+          category_id,
+          image_url,
+          is_available,
+          created_at
+        `)
+        .eq('is_available', true)
+        .order('name');
+
+      if (productsError) {
+        console.error('Products error:', productsError);
+        throw productsError;
+      }
+
+      console.log('Fetched products:', productsData); // Debug log
+      setAllProducts(productsData || []);
+
+      setCategories(categoriesData);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Failed to load menu data"
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   // Load cart from local storage
   useEffect(() => {
@@ -151,6 +227,52 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
 
   const title = "Migoy's Burger Bunsuran I";
 
+  const createOrder = async (orderData: OrderData) => {
+    try {
+      // Get current user
+      const { data: { user }, error: userError } = await supabase.auth.getUser();
+      if (userError) throw userError;
+      if (!user) throw new Error('User not authenticated');
+
+      // Start a transaction by creating the order first
+      const { data: order, error: orderError } = await supabase
+        .from('orders')
+        .insert({
+          user_id: user.id,
+          total_amount: orderData.total_amount,
+          payment_method: orderData.payment_method,
+          payment_status: orderData.payment_status,
+          order_status: 'completed'
+        })
+        .select()
+        .single();
+
+      if (orderError) throw orderError;
+
+      // Then create all order items
+      const { error: itemsError } = await supabase
+        .from('order_items')
+        .insert(
+          orderData.items.map(item => ({
+            order_id: order.id,
+            product_id: item.product_id,
+            quantity: item.quantity,
+            unit_price: item.unit_price,
+            subtotal: item.subtotal
+          }))
+        );
+
+      if (itemsError) throw itemsError;
+
+      // Clear the cart after successful order
+      clearCart();
+      return order;
+    } catch (error) {
+      console.error('Error creating order:', error);
+      throw error;
+    }
+  };
+
   const value = {
     cart,
     addToCart,
@@ -167,11 +289,14 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     deleteProduct,
     selectedPaymentMethod,
     setSelectedPaymentMethod,
-    title
+    title,
+    categories,
+    loading,
+    createOrder,
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
-};
+}
 
 export const useApp = () => {
   const context = useContext(AppContext);

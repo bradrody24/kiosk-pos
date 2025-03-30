@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { PageLayout } from '@/components/layout/page-layout';
 import { ProductGrid } from '@/components/product/product-grid';
@@ -6,43 +5,55 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Input } from '@/components/ui/input';
 import { Search } from 'lucide-react';
 import { useApp } from '@/context/AppContext';
-import { categories } from '@/data/mockData';
 import { useSearchParams } from 'react-router-dom';
-import { Product } from '@/types';
 
 const MenuPage = () => {
-  const { allProducts } = useApp();
+  const { allProducts, categories, loading } = useApp();
   const [searchParams, setSearchParams] = useSearchParams();
   const [searchTerm, setSearchTerm] = useState('');
   
   // Get category from URL or default to first category
   const categoryParam = searchParams.get('category');
   const [activeCategory, setActiveCategory] = useState(
-    categoryParam || categories[0].id
+    (categories.length > 0 ? categories[0].id : '') || categoryParam
   );
+  
+  // Update active category when categories load
+  useEffect(() => {
+    if (categories.length > 0 && !activeCategory) {
+      setActiveCategory(categories[0].id);
+    }
+  }, [categories, activeCategory]);
   
   // Update URL when category changes
   useEffect(() => {
-    setSearchParams({ category: activeCategory });
+    if (activeCategory) {
+      setSearchParams({ category: activeCategory });
+    }
   }, [activeCategory, setSearchParams]);
+  
+  useEffect(() => {
+    console.log('Products:', allProducts);
+  }, [allProducts]);
   
   // Filter products by category and search term
   const filteredProducts = allProducts.filter(product => {
-    const matchesCategory = product.category === activeCategory;
+    const matchesCategory = product.category_id === activeCategory;
     const matchesSearch = searchTerm === '' || 
-      product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      product.description.toLowerCase().includes(searchTerm.toLowerCase());
+      product.name.toLowerCase().includes(searchTerm.toLowerCase());
     
     return matchesCategory && matchesSearch;
   });
-  
-  // Group products by categories for the tab content
-  const productsByCategory: Record<string, Product[]> = {};
-  categories.forEach(category => {
-    productsByCategory[category.id] = allProducts.filter(
-      product => product.category === category.id
+
+  if (loading) {
+    return (
+      <PageLayout title="Menu" showBack={false}>
+        <div className="p-4 text-center text-muted-foreground">
+          Loading...
+        </div>
+      </PageLayout>
     );
-  });
+  }
   
   return (
     <PageLayout title="Menu" showBack={false}>

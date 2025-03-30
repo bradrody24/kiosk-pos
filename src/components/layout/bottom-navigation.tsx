@@ -19,7 +19,7 @@ export function BottomNavigation() {
     <nav className="sticky bottom-0 z-40 w-full border-t bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="mx-auto flex h-16 max-w-md items-center justify-around px-6">
         <NavLink 
-          to="/" 
+          to="/home" 
           className={({ isActive }) =>
             cn(
               "flex flex-col items-center justify-center gap-1",

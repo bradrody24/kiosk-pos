@@ -57,14 +57,14 @@ export function PaymentReceipt({ orderDetails }: PaymentReceiptProps) {
     <div className="space-y-4">
       <Card className="p-6">
         <div className="text-center mb-6">
-          <h2 className="text-2xl font-bold mb-2">Thank You!</h2>
-          <p className="text-muted-foreground">Your order has been completed</p>
+          {/* <h2 className="text-2xl font-bold mb-2">Thank You!</h2>
+          <p className="text-muted-foreground">Your order has been completed</p> */}
           <p className="text-lg font-bold mt-2">Queue #: {queueNumber}</p>
         </div>
 
         <div className="space-y-4">
           <div className="flex justify-between">
-            <span>Receipt Number:</span>
+            <span>Receipt No.:</span>
             <span className="font-mono">{receipt.id}</span>
           </div>
           <div className="flex justify-between">
@@ -76,9 +76,9 @@ export function PaymentReceipt({ orderDetails }: PaymentReceiptProps) {
         <div className="my-6">
           <div className="space-y-2">
             {receipt.items.map((item, index) => (
-              <div key={index} className="flex justify-between">
+              <div key={index} className="flex justify-between font-bold">
                 <span>
-                  {item.quantity}x {item.product.name}
+                  {item.quantity} x {item.product.name}
                 </span>
                 <span>{formatCurrency(item.product.price * item.quantity)}</span>
               </div>
@@ -118,14 +118,14 @@ export function PaymentReceipt({ orderDetails }: PaymentReceiptProps) {
               <Printer className="mr-2 h-4 w-4" />
               Print Receipt & Queue
             </Button>
-            <Button 
+            {/* <Button 
               className="flex-1" 
               variant="outline" 
               onClick={() => downloadReceipt(receipt)}
             >
               <Download className="mr-2 h-4 w-4" />
               Download
-            </Button>
+            </Button> */}
           </div>
           
           <Button 

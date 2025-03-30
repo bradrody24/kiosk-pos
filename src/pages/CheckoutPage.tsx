@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { PageLayout } from '@/components/layout/page-layout';
 import { CashPaymentForm } from '@/components/payment/cash-payment-form';
@@ -12,6 +12,12 @@ export function CheckoutPage() {
   const { cart, clearCart, cartTotal } = useApp();
   const [showReceipt, setShowReceipt] = useState(false);
   const [paymentDetails, setPaymentDetails] = useState<any>(null);
+
+  useEffect(() => {
+    if (cartTotal === 0 && !showReceipt) {
+      navigate('/menu');
+    }
+  }, [cartTotal, navigate, showReceipt]);
 
   const totalAmount = cart.reduce((total, item) => total + (item.product.price * item.quantity), 0);
 
@@ -51,7 +57,7 @@ export function CheckoutPage() {
               </CardHeader>
               
               <CardContent className="space-y-3">
-                <div className="flex justify-between">
+                {/* <div className="flex justify-between">
                   <span className="text-muted-foreground">Subtotal</span>
                   <PriceFormatter amount={totalAmount} />
                 </div>
@@ -59,7 +65,7 @@ export function CheckoutPage() {
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">Taxes</span>
                   <span><PriceFormatter amount={0.00} /></span>
-                </div>
+                </div> */}
                 
                 <div className="flex justify-between pt-3 border-t font-bold">
                   <span>Total</span>
