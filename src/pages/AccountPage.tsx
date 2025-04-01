@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { PageLayout } from '@/components/layout/page-layout';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { LogOut, User, Settings, Package } from 'lucide-react';
+import { LogOut, User, Settings, Package, Receipt } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/lib/supabase';
 
@@ -42,7 +42,7 @@ export default function AccountPage() {
   }
 
   return (
-    <PageLayout title="Account" showBack={false}>
+    <PageLayout title="Account" showCart={false}>
       <div className="p-4 space-y-4">
         {/* Profile Card */}
         <Card className="p-4">
@@ -63,7 +63,7 @@ export default function AccountPage() {
         </Card>
 
         {/* Account Details */}
-        <Card className="p-4">
+        {/* <Card className="p-4">
           <div className="space-y-3">
             <div>
               <h3 className="text-xs font-medium text-muted-foreground">Email</h3>
@@ -74,10 +74,10 @@ export default function AccountPage() {
               <p className="text-sm">{user?.id}</p>
             </div>
           </div>
-        </Card>
+        </Card> */}
 
         {/* Manage Categories Button */}
-        <Card className="p-4">
+        <Card className="p-4 bg-primary/5">
           <Button 
             variant="outline" 
             className="w-full h-9 text-sm"
@@ -89,7 +89,7 @@ export default function AccountPage() {
         </Card>
 
         {/* Manage Products Button */}
-        <Card className="p-4">
+        <Card className="p-4 bg-primary/5">
           <Button 
             variant="outline" 
             className="w-full h-9 text-sm"
@@ -97,6 +97,18 @@ export default function AccountPage() {
           >
             <Package className="mr-2 h-4 w-4" />
             Manage Products
+          </Button>
+        </Card>
+
+        {/* Sales for Today Button */}
+        <Card className="p-4 bg-primary/5">
+          <Button 
+            variant="outline" 
+            className="w-full h-9 text-sm"
+            onClick={() => navigate('/sales')}
+          >
+            <Receipt className="mr-2 h-4 w-4" />
+            Sales for Today
           </Button>
         </Card>
 

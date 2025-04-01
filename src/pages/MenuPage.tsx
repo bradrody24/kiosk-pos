@@ -3,9 +3,12 @@ import { PageLayout } from '@/components/layout/page-layout';
 import { ProductGrid } from '@/components/product/product-grid';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Input } from '@/components/ui/input';
-import { Search } from 'lucide-react';
+import { Search, Loader2 } from 'lucide-react';
 import { useApp } from '@/context/AppContext';
 import { useSearchParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { supabase } from '@/lib/supabase';
+import { User } from '@supabase/supabase-js';
 
 const MenuPage = () => {
   const { allProducts, categories, loading } = useApp();
@@ -17,6 +20,23 @@ const MenuPage = () => {
   const [activeCategory, setActiveCategory] = useState(
     (categories.length > 0 ? categories[0].id : '') || categoryParam
   );
+
+  const navigate = useNavigate();
+  const [user, setUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    // Get current user
+    const getUser = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      setUser(user);
+
+      if (!user) {
+        navigate('/login');
+      }
+    };
+
+    getUser();
+  }, [navigate]);
   
   // Update active category when categories load
   useEffect(() => {
@@ -48,8 +68,8 @@ const MenuPage = () => {
   if (loading) {
     return (
       <PageLayout title="Menu" showBack={false}>
-        <div className="p-4 text-center text-muted-foreground">
-          Loading...
+        <div className="flex items-center justify-center h-[calc(100vh-4rem)]">
+          <Loader2 className="h-8 w-8 animate-spin text-primary" />
         </div>
       </PageLayout>
     );

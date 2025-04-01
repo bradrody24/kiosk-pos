@@ -229,20 +229,28 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
   const createOrder = async (orderData: OrderData) => {
     try {
-      // Get current user
       const { data: { user }, error: userError } = await supabase.auth.getUser();
       if (userError) throw userError;
       if (!user) throw new Error('User not authenticated');
 
-      // Start a transaction by creating the order first
+      // Get the next order number
+      const { data: orderNumber, error: orderNumberError } = await supabase
+        .rpc('get_next_order_number');
+
+      if (orderNumberError) throw orderNumberError;
+
+      // Create the order with the sequential number
       const { data: order, error: orderError } = await supabase
         .from('orders')
         .insert({
+          order_number: orderNumber,
           user_id: user.id,
           total_amount: orderData.total_amount,
           payment_method: orderData.payment_method,
           payment_status: orderData.payment_status,
-          order_status: 'completed'
+          order_status: 'completed',
+          amount_paid: orderData.amount_paid,
+          change: orderData.change
         })
         .select()
         .single();

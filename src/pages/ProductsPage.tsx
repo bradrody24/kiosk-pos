@@ -183,7 +183,7 @@ export default function ProductsPage() {
   };
 
   return (
-    <PageLayout title="Products" showCart={false}>
+    <PageLayout title="Products" showBack showCart={false}>
       <div className="p-4 space-y-4">
         <Button 
           className="w-full h-9 text-sm"

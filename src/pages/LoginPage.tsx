@@ -75,17 +75,28 @@ export default function LoginPage() {
                   </div>
                 )}
 
-                <Button 
-                  type="submit" 
-                  className="w-full h-9"
-                  disabled={loading}
-                >
-                  {loading ? (
-                    <Loader2 className="h-3 w-3 animate-spin" />
-                  ) : (
-                    'Sign In'
-                  )}
-                </Button>
+                <div className="flex flex-col space-y-2">
+                  <Button 
+                    type="submit" 
+                    className="w-full h-9"
+                    disabled={loading}
+                  >
+                    {loading ? (
+                      <Loader2 className="h-3 w-3 animate-spin" />
+                    ) : (
+                      'Sign In'
+                    )}
+                  </Button>
+                  
+                  <Button 
+                    type="button"
+                    variant="outline"
+                    className="w-full h-9 text-sm"
+                    onClick={() => navigate('/explore')}
+                  >
+                    Explore Features
+                  </Button>
+                </div>
               </form>
             </CardContent>
           </Card>

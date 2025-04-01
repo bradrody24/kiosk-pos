@@ -145,7 +145,7 @@ export default function CategoriesPage() {
   };
 
   return (
-    <PageLayout title="Categories">
+    <PageLayout title="Categories" showBack showCart={false}>
       <div className="p-4 space-y-4">
         <Button 
           className="w-full h-9 text-sm"

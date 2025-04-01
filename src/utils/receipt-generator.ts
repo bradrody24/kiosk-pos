@@ -93,7 +93,7 @@ export const generateReceipt = async (receipt: Receipt) => {
   doc.setFontSize(9);
   doc.setFont(undefined, 'bold');
   doc.text("Change:", margin, yPos);
-  doc.text(formatCurrency(receipt.change), pageWidth - margin, yPos, { align: 'right' });
+  doc.text(formatCurrency(receipt.change_amount), pageWidth - margin, yPos, { align: 'right' });
   yPos += 6;
 
   // Footer

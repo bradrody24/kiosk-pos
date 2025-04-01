@@ -9,7 +9,7 @@ import { useToast } from "@/components/ui/use-toast";
 
 interface CashPaymentFormProps {
   totalAmount: number;
-  onPaymentComplete: () => void;
+  onPaymentComplete: (number: number) => void;
 }
 
 export function CashPaymentForm({ totalAmount, onPaymentComplete }: CashPaymentFormProps) {
@@ -53,14 +53,14 @@ export function CashPaymentForm({ totalAmount, onPaymentComplete }: CashPaymentF
       };
 
       console.log('Order Data:', orderData); // Debug log
-      await createOrder(orderData);
+      /* await createOrder(orderData); */
       
       toast({
         title: "Order Successful",
         description: "Your order has been placed successfully!",
         className: "bg-green-500 text-white",
       });
-      onPaymentComplete();
+      onPaymentComplete(parseFloat(cashAmount));
     } catch (error) {
       console.error('Error processing order:', error);
       toast({

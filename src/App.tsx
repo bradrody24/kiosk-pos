@@ -18,6 +18,8 @@ import NotFound from "./pages/NotFound";
 import RegisterPage from '@/pages/RegisterPage';
 import CategoriesPage from '@/pages/CategoriesPage';
 import ProductsPage from '@/pages/ProductsPage';
+import SalesPage from '@/pages/SalesPage';
+import ExplorePage from '@/pages/ExplorePage';
 
 // Admin Pages
 import AdminDashboard from "./pages/admin/AdminDashboard";
@@ -62,6 +64,12 @@ const App = () => (
             
             {/* Products Routes */}
             <Route path="/products" element={<ProductsPage />} />
+            
+            {/* Sales Routes */}
+            <Route path="/sales" element={<SalesPage />} />
+            
+            {/* Explore Routes */}
+            <Route path="/explore" element={<ExplorePage />} />
             
             {/* 404 Page */}
             <Route path="*" element={<NotFound />} />

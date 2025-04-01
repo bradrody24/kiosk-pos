@@ -6,13 +6,12 @@ import { Button } from '@/components/ui/button';
 import { Minus, Plus, ShoppingCart } from 'lucide-react';
 import { PriceFormatter } from '@/components/ui/price-formatter';
 import { useApp } from '@/context/AppContext';
-import { categories } from '@/data/mockData';
 import { Badge } from '@/components/ui/badge';
 
 const ProductDetailPage = () => {
   const { productId } = useParams<{ productId: string }>();
   const navigate = useNavigate();
-  const { allProducts, addToCart } = useApp();
+  const { allProducts, addToCart, categories } = useApp();
   const [quantity, setQuantity] = useState(1);
   
   const product = allProducts.find(p => p.id === productId);
@@ -29,7 +28,7 @@ const ProductDetailPage = () => {
     );
   }
   
-  const category = categories.find(c => c.id === product.category);
+  const category = categories.find(c => c.id === product.category_id);
   
   const handleAddToCart = () => {
     addToCart(product, quantity);
@@ -42,7 +41,7 @@ const ProductDetailPage = () => {
         {/* Product Image */}
         <div className="relative h-72">
           <img 
-            src={product.image} 
+            src={product.image_url} 
             alt={product.name} 
             className="w-full h-full object-cover"
           />
@@ -56,7 +55,7 @@ const ProductDetailPage = () => {
           </div>
           
           {category && (
-            <Badge variant="outline" className="mb-3">
+            <Badge variant="default" className="mb-3">
               {category.name}
             </Badge>
           )}
