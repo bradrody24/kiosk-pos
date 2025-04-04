@@ -50,7 +50,7 @@ export function PaymentReceipt({ orderDetails }: PaymentReceiptProps) {
     // Wait a bit before printing queue number
     setTimeout(async () => {
       await printQueueTicket(queueNumber);
-    }, 1000);
+    }, 3000);
   };
 
   return (

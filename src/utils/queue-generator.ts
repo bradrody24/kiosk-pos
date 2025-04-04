@@ -17,7 +17,7 @@ export const generateQueueTicket = async (queueNumber: string) => {
   });
 
   // Add monospace font
-  doc.setFont('courier', 'normal');
+  //doc.setFont('courier', 'normal');
 
   const pageWidth = doc.internal.pageSize.getWidth();
   const margin = 2;
@@ -29,19 +29,19 @@ export const generateQueueTicket = async (queueNumber: string) => {
   yPos += 3;
 
   // Add Queue Number label
-  doc.setFontSize(6);
+  doc.setFontSize(8);
   doc.text("MBBF", pageWidth / 2, yPos, { align: 'center' });
   yPos += 4;
 
   // Add the queue number in larger text
   doc.setFontSize(14);
-  doc.setFont('courier', 'bold');
+  //doc.setFont('courier', 'bold');
   doc.text(queueNumber, pageWidth / 2, yPos, { align: 'center' });
   yPos += 5;
 
   // Add date and time
-  doc.setFontSize(6);
-  doc.setFont('courier', 'normal');
+  doc.setFontSize(8);
+  //doc.setFont('courier', 'normal');
   doc.text(
     new Date().toLocaleString(),
     pageWidth / 2,
