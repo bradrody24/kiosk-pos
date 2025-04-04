@@ -62,7 +62,7 @@ export const generateReceipt = async (receipt: Receipt) => {
     columnStyles: {
       0: { cellWidth: 23 },
       1: { cellWidth: 7, halign: 'center' },
-      2: { cellWidth: 18, halign: 'right' }, // Ensure total header is justified right
+      2: { cellWidth: 15, halign: 'right' }, // Ensure total header is justified right
     },
     theme: 'plain'
   });
@@ -101,8 +101,34 @@ export const generateReceipt = async (receipt: Receipt) => {
   //doc.setFont('courier', 'normal');
   doc.setFontSize(8);
   doc.text("Thank you for your purchase!", pageWidth / 2, yPos, { align: 'center' });
-  /* yPos += 4;
-  doc.text("Please come again!", pageWidth / 2, yPos, { align: 'center' }); */
+  yPos += 10;
+
+  // Add divider
+  doc.setLineWidth(0.1);
+  doc.line(margin, yPos, pageWidth - margin, yPos);
+  yPos += 5;
+
+  // Add Queue Number label
+  doc.setFontSize(8);
+  doc.text("MBBF", pageWidth / 2, yPos, { align: 'center' });
+  yPos += 6;
+
+  // Add the queue number in larger text
+  doc.setFontSize(14);
+  //doc.setFont('courier', 'bold');
+  doc.text(receipt.queueNumber, pageWidth / 2, yPos, { align: 'center' });
+  yPos += 5;
+
+  // Add date and time
+  doc.setFontSize(8);
+  //doc.setFont('courier', 'normal');
+  doc.text(
+    new Date().toLocaleString(),
+    pageWidth / 2,
+    yPos,
+    { align: 'center' }
+  );
+  yPos += 2;
 
   return doc;
 };
