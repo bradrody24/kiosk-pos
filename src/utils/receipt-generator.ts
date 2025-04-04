@@ -12,20 +12,20 @@ export const generateReceipt = async (receipt: Receipt) => {
   });
 
   // Add monospace font
-  doc.setFont('courier', 'normal');
+  doc.setFont('monospace', 'normal');
 
   const pageWidth = doc.internal.pageSize.getWidth();
   const margin = 2;
   let yPos = margin;
   
   // Header
-  doc.setFont('courier', 'normal');
+  doc.setFont('monospace', 'normal');
   doc.setFontSize(8);
   doc.text("Migoy's Burger", pageWidth / 2, yPos + 4, { align: 'center' });
   yPos += 6;
 
   // Receipt details
-  doc.setFont('courier', 'normal');
+  doc.setFont('monospace', 'normal');
   doc.setFontSize(6);
   doc.text(`Receipt #: ${receipt.id}`, margin, yPos);
   yPos += 3;
@@ -33,7 +33,7 @@ export const generateReceipt = async (receipt: Receipt) => {
   yPos += 4;
 
   // Add queue number to receipt
-  doc.setFont('courier', 'bold');
+  doc.setFont('monospace', 'bold');
   doc.setFontSize(7);
   doc.text(`Queue #: ${receipt.queueNumber}`, margin, yPos);
   yPos += 2;
@@ -53,13 +53,13 @@ export const generateReceipt = async (receipt: Receipt) => {
       cellPadding: 1,
       lineWidth: 0,
       lineColor: [0, 0, 0],
-      font: 'courier'
+      font: 'monospace'
     },
     headStyles: {
       fillColor: false,
       textColor: [0, 0, 0],
       fontStyle: 'normal',
-      font: 'courier'
+      font: 'monospace'
     },
     columnStyles: {
       0: { cellWidth: 23 },
@@ -72,7 +72,7 @@ export const generateReceipt = async (receipt: Receipt) => {
   yPos = (doc as any).lastAutoTable.finalY + 3;
 
   // Totals section
-  doc.setFont('courier', 'normal');
+  doc.setFont('monospace', 'normal');
   doc.setFontSize(6);
   doc.text("Subtotal:", margin, yPos);
   doc.text(formatCurrency(receipt.subtotal), pageWidth - margin, yPos, { align: 'right' });
@@ -83,24 +83,24 @@ export const generateReceipt = async (receipt: Receipt) => {
   yPos += 3;
 
   // Total amount
-  doc.setFont('courier', 'bold');
+  doc.setFont('monospace', 'bold');
   doc.text("Total:", margin, yPos);
   doc.text(formatCurrency(receipt.total), pageWidth - margin, yPos, { align: 'right' });
   yPos += 4;
 
   // Payment details
-  doc.setFont('courier', 'normal');
+  doc.setFont('monospace', 'normal');
   doc.text("Cash:", margin, yPos);
   doc.text(formatCurrency(receipt.amountPaid), pageWidth - margin, yPos, { align: 'right' });
   yPos += 3;
 
-  doc.setFont('courier', 'bold');
+  doc.setFont('monospace', 'bold');
   doc.text("Change:", margin, yPos);
   doc.text(formatCurrency(receipt.change), pageWidth - margin, yPos, { align: 'right' });
   yPos += 4;
 
   // Footer
-  doc.setFont('courier', 'normal');
+  doc.setFont('monospace', 'normal');
   doc.setFontSize(6);
   doc.text("Thank you for your purchase!", pageWidth / 2, yPos, { align: 'center' });
 
@@ -125,14 +125,14 @@ export const printReceipt = async (receipt: Receipt) => {
   }
 };
 
-export const downloadReceipt = async (receipt: Receipt) => {
+/* export const downloadReceipt = async (receipt: Receipt) => {
   try {
     const doc = await generateReceipt(receipt);
     doc.save(`receipt-${receipt.id}.pdf`);
   } catch (error) {
     console.error('Error downloading receipt:', error);
   }
-};
+}; */
 
 function formatCurrency(amount: number) {
   return new Intl.NumberFormat('en-US', {

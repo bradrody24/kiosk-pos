@@ -56,7 +56,7 @@ export const generateQueueTicket = async (queueNumber: string) => {
   return doc;
 };
 
-export const printQueueTicket = async (queueNumber: string) => {
+/* export const printQueueTicket = async (queueNumber: string) => {
   try {
     const doc = await generateQueueTicket(queueNumber);
     doc.autoPrint();
@@ -64,4 +64,22 @@ export const printQueueTicket = async (queueNumber: string) => {
   } catch (error) {
     console.error('Error printing queue ticket:', error);
   }
-}; 
+};  */
+
+export const printQueueTicket = async (queueNumber: string) => {
+  try {
+    const doc = await generateQueueTicket(queueNumber);
+    // Open in new window for printing
+    const blob = doc.output('blob');
+    const url = URL.createObjectURL(blob);
+    const printWindow = window.open(url);
+    if (printWindow) {
+      printWindow.onload = () => {
+        printWindow.print();
+        URL.revokeObjectURL(url);
+      };
+    }
+  } catch (error) {
+    console.error('Error printing queue:', error);
+  }
+};
