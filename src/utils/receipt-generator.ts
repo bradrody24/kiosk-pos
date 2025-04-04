@@ -71,14 +71,14 @@ export const generateReceipt = async (receipt: Receipt) => {
 
   // Totals section
   //doc.setFont('courier', 'normal');
-  doc.setFontSize(8);
+/*   doc.setFontSize(8);
   doc.text("Subtotal:", margin, yPos);
   doc.text(formatCurrency(receipt.subtotal), pageWidth - margin, yPos, { align: 'right' });
   yPos += 4;
 
   doc.text("Tax:", margin, yPos);
   doc.text(formatCurrency(receipt.tax), pageWidth - margin, yPos, { align: 'right' });
-  yPos += 4;
+  yPos += 4; */
 
   // Total amount
   //doc.setFont('courier', 'bold');

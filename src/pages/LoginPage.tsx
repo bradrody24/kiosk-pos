@@ -9,7 +9,7 @@ import { PageLayout } from '@/components/layout/page-layout';
 
 export default function LoginPage() {
   const navigate = useNavigate();
-  const [email, setEmail] = useState('appsanyware@gmail.com');
+  const [email, setEmail] = useState('rody.e.rivera@gmail.com');
   const [password, setPassword] = useState('password');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);

@@ -81,8 +81,8 @@ export function CheckoutPage() {
             {/* Order Summary Card */}
             <Card className="mt-6 mb-6">
               <CardHeader>
-                <CardTitle>Order Summary</CardTitle>
-                <CardDescription>Review your order before payment</CardDescription>
+                <CardTitle>Payment Summary</CardTitle>
+                {/* <CardDescription>Review your order before payment</CardDescription> */}
               </CardHeader>
               
               <CardContent className="space-y-3">

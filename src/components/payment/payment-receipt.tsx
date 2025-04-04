@@ -48,9 +48,9 @@ export function PaymentReceipt({ orderDetails }: PaymentReceiptProps) {
     // Print receipt first
     await printReceipt(receipt);
     // Wait a bit before printing queue number
-    setTimeout(async () => {
+    /* setTimeout(async () => {
       await printQueueTicket(queueNumber);
-    }, 3000);
+    }, 3  000); */
   };
 
   return (
@@ -86,14 +86,14 @@ export function PaymentReceipt({ orderDetails }: PaymentReceiptProps) {
           </div>
 
           <div className="mt-4 pt-4 border-t space-y-2">
-            <div className="flex justify-between">
+            {/* <div className="flex justify-between">
               <span>Subtotal</span>
               <span>{formatCurrency(receipt.subtotal)}</span>
             </div>
             <div className="flex justify-between">
               <span>Tax</span>
               <span>{formatCurrency(receipt.tax)}</span>
-            </div>
+            </div> */}
             <div className="flex justify-between font-bold">
               <span>Total</span>
               <span>{formatCurrency(receipt.total)}</span>

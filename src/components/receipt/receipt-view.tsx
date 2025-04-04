@@ -32,8 +32,8 @@ export function ReceiptView({ order }: ReceiptViewProps) {
   return (
     <Card className="p-6 max-w-sm mx-auto bg-white">
       <div className="text-center mb-4">
-        <h2 className="text-lg font-bold">Your Store Name</h2>
-        <p className="text-sm text-muted-foreground">123 Store Address</p>
+        <h2 className="text-lg font-bold">Migoy's Burger</h2>
+        <p className="text-sm text-muted-foreground">Bunsuran 1st</p>
       </div>
 
       <div className="border-t border-b py-2 my-2">
