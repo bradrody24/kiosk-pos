@@ -4,7 +4,6 @@ export const generateReceipt = async (receipt: Receipt) => {
   const { default: jsPDF } = await import('jspdf');
   const { default: autoTable } = await import('jspdf-autotable');
   
-  // Create document with initial size
   const doc = new jsPDF({
     orientation: 'portrait',
     unit: 'mm',
@@ -21,21 +20,21 @@ export const generateReceipt = async (receipt: Receipt) => {
   
   // Header
   doc.setFont('courier', 'normal');
-  doc.setFontSize(10);
+  doc.setFontSize(8);
   doc.text("Migoy's Burger", pageWidth / 2, yPos + 4, { align: 'center' });
-  yPos += 8;
+  yPos += 6;
 
   // Receipt details
   doc.setFont('courier', 'normal');
-  doc.setFontSize(8);
+  doc.setFontSize(6);
   doc.text(`Receipt #: ${receipt.id}`, margin, yPos);
-  yPos += 4;
+  yPos += 3;
   doc.text(`Date: ${receipt.date.toLocaleString()}`, margin, yPos);
-  yPos += 6;
+  yPos += 4;
 
   // Add queue number to receipt
   doc.setFont('courier', 'bold');
-  doc.setFontSize(9);
+  doc.setFontSize(7);
   doc.text(`Queue #: ${receipt.queueNumber}`, margin, yPos);
   yPos += 2;
 
@@ -50,62 +49,60 @@ export const generateReceipt = async (receipt: Receipt) => {
       formatCurrency(item.product.price * item.quantity)
     ]),
     styles: {
-      fontSize: 8,
+      fontSize: 6,
       cellPadding: 1,
-      lineWidth: 0, // Removed border lines
+      lineWidth: 0,
       lineColor: [0, 0, 0],
-      font: 'courier' // Use monospace font
+      font: 'courier'
     },
     headStyles: {
       fillColor: false,
       textColor: [0, 0, 0],
       fontStyle: 'normal',
-      font: 'courier' // Use monospace font for header
+      font: 'courier'
     },
     columnStyles: {
       0: { cellWidth: 23 },
       1: { cellWidth: 7, halign: 'center' },
-      2: { cellWidth: 18, halign: 'right' }, // Ensure total header is justified right
+      2: { cellWidth: 18, halign: 'right' },
     },
     theme: 'plain'
   });
 
-  yPos = (doc as any).lastAutoTable.finalY + 4;
+  yPos = (doc as any).lastAutoTable.finalY + 3;
 
   // Totals section
   doc.setFont('courier', 'normal');
-  doc.setFontSize(8);
+  doc.setFontSize(6);
   doc.text("Subtotal:", margin, yPos);
   doc.text(formatCurrency(receipt.subtotal), pageWidth - margin, yPos, { align: 'right' });
-  yPos += 4;
+  yPos += 3;
 
   doc.text("Tax:", margin, yPos);
   doc.text(formatCurrency(receipt.tax), pageWidth - margin, yPos, { align: 'right' });
-  yPos += 4;
+  yPos += 3;
 
   // Total amount
   doc.setFont('courier', 'bold');
   doc.text("Total:", margin, yPos);
   doc.text(formatCurrency(receipt.total), pageWidth - margin, yPos, { align: 'right' });
-  yPos += 5;
+  yPos += 4;
 
   // Payment details
   doc.setFont('courier', 'normal');
   doc.text("Cash:", margin, yPos);
   doc.text(formatCurrency(receipt.amountPaid), pageWidth - margin, yPos, { align: 'right' });
-  yPos += 4;
+  yPos += 3;
 
   doc.setFont('courier', 'bold');
   doc.text("Change:", margin, yPos);
   doc.text(formatCurrency(receipt.change), pageWidth - margin, yPos, { align: 'right' });
-  yPos += 6;
+  yPos += 4;
 
   // Footer
   doc.setFont('courier', 'normal');
-  doc.setFontSize(8);
+  doc.setFontSize(6);
   doc.text("Thank you for your purchase!", pageWidth / 2, yPos, { align: 'center' });
-  /* yPos += 4;
-  doc.text("Please come again!", pageWidth / 2, yPos, { align: 'center' }); */
 
   return doc;
 };

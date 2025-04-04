@@ -26,21 +26,21 @@ export const generateQueueTicket = async (queueNumber: string) => {
   // Add divider
   doc.setLineWidth(0.1);
   doc.line(margin, yPos, pageWidth - margin, yPos);
-  yPos += 4;
+  yPos += 3;
 
   // Add Queue Number label
-  doc.setFontSize(8);
+  doc.setFontSize(6);
   doc.text("MBBF", pageWidth / 2, yPos, { align: 'center' });
-  yPos += 6;
+  yPos += 4;
 
   // Add the queue number in larger text
-  doc.setFontSize(16);
+  doc.setFontSize(14);
   doc.setFont('courier', 'bold');
   doc.text(queueNumber, pageWidth / 2, yPos, { align: 'center' });
-  yPos += 6;
+  yPos += 5;
 
   // Add date and time
-  doc.setFontSize(8);
+  doc.setFontSize(6);
   doc.setFont('courier', 'normal');
   doc.text(
     new Date().toLocaleString(),
