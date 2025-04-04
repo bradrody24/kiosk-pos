@@ -90,7 +90,7 @@ export const generateReceipt = async (receipt: Receipt) => {
   //doc.setFont('courier', 'normal');
   doc.text("Cash:", margin, yPos);
   doc.text(formatCurrency(receipt.amountPaid), pageWidth - margin, yPos, { align: 'right' });
-  yPos += 4;
+  yPos += 5;
 
   //doc.setFont('courier', 'bold');
   doc.text("Change:", margin, yPos);
