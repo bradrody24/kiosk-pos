@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { AppProvider } from "@/context/AppContext";
 import { CheckoutPage } from "./pages/CheckoutPage";
 import { useOffline } from '@/hooks/useOffline';
+import { usePullToRefresh } from '@/hooks/usePullToRefresh';
 
 // Pages
 import LoginPage from "./pages/LoginPage";
@@ -33,6 +34,12 @@ const queryClient = new QueryClient();
 
 const App = () => {
   const isOffline = useOffline();
+
+  const handleRefresh = () => {
+    window.location.reload();
+  };
+
+  usePullToRefresh(handleRefresh);
 
   return (
     <QueryClientProvider client={queryClient}>

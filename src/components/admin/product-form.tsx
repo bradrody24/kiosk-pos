@@ -21,7 +21,6 @@ import {
 } from '@/components/ui/select';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Product } from '@/types';
-import { categories } from '@/data/mockData';
 import { useApp } from '@/context/AppContext';
 import { toast } from '@/components/ui/use-toast';
 
@@ -31,7 +30,7 @@ interface ProductFormProps {
 }
 
 export function ProductForm({ product, onSuccess }: ProductFormProps) {
-  const { addProduct, updateProduct } = useApp();
+  const { addProduct, categories, updateProduct } = useApp();
   const [isSubmitting, setIsSubmitting] = useState(false);
   
   const isEditing = !!product;

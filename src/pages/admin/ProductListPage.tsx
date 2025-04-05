@@ -7,13 +7,12 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { PriceFormatter } from '@/components/ui/price-formatter';
 import { Link } from 'react-router-dom';
 import { useApp } from '@/context/AppContext';
-import { categories } from '@/data/mockData';
 import { Edit, Plus, Search, Trash } from 'lucide-react';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Product } from '@/types';
 
 const ProductListPage = () => {
-  const { allProducts, deleteProduct, user } = useApp();
+  const { allProducts, categories, deleteProduct, user } = useApp();
   const [searchTerm, setSearchTerm] = useState('');
   const [activeCategory, setActiveCategory] = useState('all');
   const [productToDelete, setProductToDelete] = useState<Product | null>(null);
@@ -114,7 +113,7 @@ const ProductListPage = () => {
                       <h3 className="font-medium truncate">{product.name}</h3>
                       <div className="flex items-center text-sm">
                         <span className="text-muted-foreground mr-2">
-                          {categories.find(c => c.id === product.category)?.name}
+                          {categories.find(c => c.id === product.category_id)?.name}
                         </span>
                         <PriceFormatter amount={product.price} className="font-semibold" />
                       </div>

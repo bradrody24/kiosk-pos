@@ -71,7 +71,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [user]);
 
   const fetchData = async () => {
     try {
@@ -95,8 +95,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
           is_available,
           created_at
         `)
-        .eq('is_available', true)
-        .order('name');
+        .order('name')
 
       if (productsError) {
         console.error('Products error:', productsError);
@@ -104,8 +103,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
       }
 
       console.log('Fetched products:', productsData); // Debug log
-      setAllProducts(productsData || []);
-
+      setAllProducts(productsData);
       setCategories(categoriesData);
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -118,6 +116,11 @@ export function AppProvider({ children }: { children: ReactNode }) {
       setLoading(false);
     }
   };
+
+  /* useEffect(() => {
+    
+      fetchData(); // Ensure fetchData is called upon user login
+  }, [ user ]); */
 
   // Load cart from local storage
   useEffect(() => {

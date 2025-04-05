@@ -11,7 +11,7 @@ import { supabase } from '@/lib/supabase';
 import { User } from '@supabase/supabase-js';
 
 const MenuPage = () => {
-  const { allProducts, categories, loading } = useApp();
+  const { allProducts, categories, loading, login } = useApp();
   const [searchParams, setSearchParams] = useSearchParams();
   const [searchTerm, setSearchTerm] = useState('');
   
@@ -26,16 +26,17 @@ const MenuPage = () => {
 
   useEffect(() => {
     // Get current user
-    const getUser = async () => {
+    const fetchUser = async () => {
       const { data: { user } } = await supabase.auth.getUser();
-      setUser(user);
+      login('admin');
 
+      console.log("Fetching user from MenuPage");
       if (!user) {
         navigate('/login');
       }
     };
 
-    getUser();
+    fetchUser();
   }, [navigate]);
   
   // Update active category when categories load
@@ -90,7 +91,7 @@ const MenuPage = () => {
         </div>
         
         {/* Category Tabs */}
-        <Tabs defaultValue={activeCategory} onValueChange={setActiveCategory}>
+        <Tabs defaultValue={activeCategory ? categories[0].id : null} onValueChange={setActiveCategory}>
           <TabsList className="w-full h-auto flex mb-6 overflow-x-auto justify-start">
             {categories.map(category => (
               <TabsTrigger 
