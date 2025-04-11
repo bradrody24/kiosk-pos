@@ -41,9 +41,9 @@ export function ProductForm({ product, onSuccess }: ProductFormProps) {
       name: '',
       description: '',
       price: 0,
-      image: '',
-      category: categories[0].id,
-      featured: false
+      image_url: '',
+      category_id: categories[0].id,
+      is_available: true
     }
   });
   

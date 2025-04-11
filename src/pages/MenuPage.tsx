@@ -9,9 +9,10 @@ import { useSearchParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/lib/supabase';
 import { User } from '@supabase/supabase-js';
+import { Product } from '@/types';
 
 const MenuPage = () => {
-  const { allProducts, categories, loading, login } = useApp();
+  const { allProducts, categories, loading, login, addToCart } = useApp();
   const [searchParams, setSearchParams] = useSearchParams();
   const [searchTerm, setSearchTerm] = useState('');
   
@@ -23,20 +24,21 @@ const MenuPage = () => {
 
   const navigate = useNavigate();
   const [user, setUser] = useState<User | null>(null);
+  /* const [notesDialogOpen, setNotesDialogOpen] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null); */
 
   useEffect(() => {
     // Get current user
-    const fetchUser = async () => {
+    const getUser = async () => {
       const { data: { user } } = await supabase.auth.getUser();
-      login('admin');
-
+      
       console.log("Fetching user from MenuPage");
       if (!user) {
         navigate('/login');
       }
     };
 
-    fetchUser();
+    getUser();
   }, [navigate]);
   
   // Update active category when categories load
@@ -54,7 +56,7 @@ const MenuPage = () => {
   }, [activeCategory, setSearchParams]);
   
   useEffect(() => {
-    console.log('Products:', allProducts);
+    console.log('Products from MenuPage:', allProducts);
   }, [allProducts]);
   
   // Filter products by category and search term
@@ -65,6 +67,20 @@ const MenuPage = () => {
     
     return matchesCategory && matchesSearch;
   });
+
+  /* const handleAddToCart = (product: Product) => {
+    if (product.is_notes_required) {
+      // Show notes dialog
+      setSelectedProduct(product);
+      setNotesDialogOpen(true);
+    } else {
+      addToCart(product);
+    }
+  }; */
+
+  /* const onAddToCart = async (name: string) => {
+    addToCart({ ...product, name: name ? `${product.name} - ${name}` : product.name });
+  }; */
 
   if (loading) {
     return (
@@ -107,7 +123,10 @@ const MenuPage = () => {
           {categories.map(category => (
             <TabsContent key={category.id} value={category.id} className="mt-0">
               {filteredProducts.length > 0 ? (
-                <ProductGrid products={filteredProducts} />
+                <ProductGrid 
+                  products={filteredProducts} 
+                  /* onAddToCart={handleAddToCart}  */
+                />
               ) : (
                 <div className="text-center py-10">
                   <p className="text-muted-foreground">No products found. Try a different search.</p>
@@ -117,6 +136,12 @@ const MenuPage = () => {
           ))}
         </Tabs>
       </div>
+      {/* <NotesDialog
+        open={notesDialogOpen}
+        onOpenChange={setNotesDialogOpen}
+        product={selectedProduct}
+        onAddToCart={addToCart}
+      /> */}
     </PageLayout>
   );
 };

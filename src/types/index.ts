@@ -5,7 +5,7 @@ export interface Product {
   price: number;
   category_id: string;
   image_url: string;
-  is_available: boolean;
+  is_notes_required: boolean;
   created_at: string;
 }
 

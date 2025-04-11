@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { PageLayout } from '@/components/layout/page-layout';
 import { Button } from '@/components/ui/button';
@@ -10,6 +9,7 @@ import { useApp } from '@/context/AppContext';
 import { Edit, Plus, Search, Trash } from 'lucide-react';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Product } from '@/types';
+import { supabase } from '@/lib/supabase';
 
 const ProductListPage = () => {
   const { allProducts, categories, deleteProduct, user } = useApp();
@@ -48,10 +48,40 @@ const ProductListPage = () => {
     setProductToDelete(product);
   };
   
-  const handleDelete = () => {
+  const handleDelete = async () => {
     if (productToDelete) {
-      deleteProduct(productToDelete.id);
-      setProductToDelete(null);
+      try {
+        // First, delete any related records from other tables that reference this product
+        // For example, if you have cart_items or order_items tables that reference products
+        await supabase
+          .from('cart_items')
+          .delete()
+          .eq('product_id', productToDelete.id);
+          
+        await supabase
+          .from('order_items')
+          .delete()
+          .eq('product_id', productToDelete.id);
+          
+        // Any other related tables...
+        
+        // Then delete the product itself
+        const { error } = await supabase
+          .from('products')
+          .delete()
+          .eq('id', productToDelete.id);
+          
+        if (error) throw error;
+        
+        // Update UI or state after successful deletion
+        // e.g., setProducts(products.filter(p => p.id !== productToDelete.id));
+        
+        deleteProduct(productToDelete.id);
+        setProductToDelete(null);
+      } catch (error) {
+        console.error('Error deleting product:', error);
+        // Show error toast or message to user
+      }
     }
   };
   

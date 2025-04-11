@@ -19,7 +19,7 @@ interface AppContextType {
 
   // User
   user: User | null;
-  login: (role: 'admin' | 'customer') => void;
+  login: (id: string, name: string, role: 'admin' | 'customer') => void;
   logout: () => void;
 
   // Products
@@ -92,10 +92,10 @@ export function AppProvider({ children }: { children: ReactNode }) {
           price,
           category_id,
           image_url,
-          is_available,
+          is_notes_required,
           created_at
         `)
-        .order('name')
+        .order('name');
 
       if (productsError) {
         console.error('Products error:', productsError);
@@ -104,6 +104,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
       console.log('Fetched products:', productsData); // Debug log
       setAllProducts(productsData);
+
       setCategories(categoriesData);
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -116,11 +117,6 @@ export function AppProvider({ children }: { children: ReactNode }) {
       setLoading(false);
     }
   };
-
-  /* useEffect(() => {
-    
-      fetchData(); // Ensure fetchData is called upon user login
-  }, [ user ]); */
 
   // Load cart from local storage
   useEffect(() => {
@@ -185,10 +181,10 @@ export function AppProvider({ children }: { children: ReactNode }) {
   };
 
   // User functions
-  const login = (role: 'admin' | 'customer') => {
+  const login = (id: string, name: string, role: 'admin' | 'customer') => {
     setUser({
-      id: '1',
-      name: role === 'admin' ? 'Admin User' : 'Customer',
+      id,
+      name,
       role
     });
   };

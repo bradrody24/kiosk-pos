@@ -9,6 +9,8 @@ import { format } from 'date-fns';
 import { useNavigate } from 'react-router-dom';
 import { ReceiptView } from '@/components/receipt/receipt-view';
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from '@/components/ui/dialog';
+import { Link } from 'react-router-dom';
+import { Weight } from 'lucide-react';
 
 interface OrderItem {
   id: string;
@@ -92,8 +94,15 @@ export default function SalesPage() {
     <PageLayout title="Today's Sales" showBack showCart={false}>
       <div className="p-4 space-y-4">
         {orders.length === 0 ? (
-          <div className="text-center py-8 text-muted-foreground">
-            No sales recorded for today
+          <div className="flex flex-col items-center justify-center py-16">
+            <Weight className="h-16 w-16 text-muted-foreground mb-4" />
+            <h2 className="text-xl font-bold mb-2">No sales recorded for today</h2>
+            <p className="text-muted-foreground mb-6 text-center">
+              Looks like you haven't entered any sales.
+            </p>
+            <Link to="/menu">
+              <Button>View Menu</Button>
+            </Link>
           </div>
         ) : (
           <>

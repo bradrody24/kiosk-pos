@@ -19,6 +19,7 @@ import {
 import { Label } from "@/components/ui/label";
 import { ImagePlus, Loader2 } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
+import { Checkbox } from "@/components/ui/checkbox";
 
 interface Category {
   id: string;
@@ -40,6 +41,7 @@ export interface ProductFormData {
   price: string;
   category_id: string;
   image_url: string;
+  is_notes_required: boolean;
 }
 
 export function ProductDialog({ 
@@ -56,6 +58,7 @@ export function ProductDialog({
     price: '',
     category_id: '',
     image_url: '',
+    is_notes_required: false,
   });
   const [loading, setLoading] = useState(false);
   const [imageFile, setImageFile] = useState<File | null>(null);
@@ -70,6 +73,7 @@ export function ProductDialog({
         price: defaultValues.price.toString(),
         category_id: defaultValues.category_id,
         image_url: defaultValues.image_url || '',
+        is_notes_required: defaultValues.is_notes_required || false,
       });
       setImagePreview(defaultValues.image_url || '');
     } else {
@@ -79,6 +83,7 @@ export function ProductDialog({
         price: '',
         category_id: '',
         image_url: '',
+        is_notes_required: false,
       });
       setImagePreview('');
     }
@@ -141,10 +146,13 @@ export function ProductDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent aria-describedby="product-form-description" className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
         </DialogHeader>
+        <p id="product-form-description" className="sr-only">
+          {title === 'New Product' ? 'Create a new product' : 'Edit existing product'}
+        </p>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-4">
             <div className="space-y-2">
@@ -205,9 +213,22 @@ export function ProductDialog({
               </Select>
             </div>
 
+            <div className="space-y-2 py-4"> {/* Added padding top and bottom */}
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="notes-required"
+                  checked={formData.is_notes_required}
+                  onCheckedChange={(checked) => 
+                    setFormData(prev => ({ ...prev, is_notes_required: checked as boolean }))
+                  }
+                />
+                <Label htmlFor="notes-required">Require notes for this product</Label>
+              </div>
+            </div>
+            
             <div className="space-y-2">
               <Label>Product Image</Label>
-              <div className="flex flex-col items-center gap-4">
+              <div className="flex flex-col items-center gap-4 border border-light-gray">
                 {imagePreview ? (
                   <div className="relative w-full h-48 rounded-md overflow-hidden">
                     <img

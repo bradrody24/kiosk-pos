@@ -17,11 +17,13 @@ export function CartItem({ item }: CartItemProps) {
   return (
     <div className="flex py-4 border-b">
       <div className="h-20 w-20 overflow-hidden rounded-md">
-        <img 
-          src={product.image_url} 
-          alt={product.name} 
-          className="h-full w-full object-cover"
-        />
+        <div className="flex items-center justify-center h-full w-full">
+          <img 
+            src={product.image_url} 
+            alt={product.name} 
+            className="max-h-full max-w-full object-contain"
+          />
+        </div>
       </div>
       
       <div className="ml-3 flex-1">

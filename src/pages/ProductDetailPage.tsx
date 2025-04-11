@@ -36,14 +36,14 @@ const ProductDetailPage = () => {
   };
   
   return (
-    <PageLayout showBack>
+    <PageLayout title="Product Details" showBack>
       <div className="pb-6">
         {/* Product Image */}
-        <div className="relative h-72">
+        <div className="relative h-72 flex items-center justify-center">
           <img 
             src={product.image_url} 
             alt={product.name} 
-            className="w-full h-full object-cover"
+            className="max-w-full max-h-full object-contain"
           />
         </div>
         

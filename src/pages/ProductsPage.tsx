@@ -24,6 +24,7 @@ interface Product {
   price: number;
   category_id: string;
   image_url: string;
+  is_notes_required: boolean;
   created_at: string;
 }
 
@@ -88,6 +89,7 @@ export default function ProductsPage() {
 
   const handleDelete = async (id: string) => {
     try {
+      console.log('Deleting product with ID:', id);
       const { error } = await supabase
         .from('products')
         .delete()
@@ -129,6 +131,7 @@ export default function ProductsPage() {
           price: parseFloat(data.price),
           category_id: data.category_id,
           image_url: data.image_url,
+          is_notes_required: data.is_notes_required,
         }])
         .select()
         .single();
@@ -162,6 +165,7 @@ export default function ProductsPage() {
           price: parseFloat(data.price),
           category_id: data.category_id,
           image_url: data.image_url,
+          is_notes_required: data.is_notes_required,
         })
         .eq('id', editingProduct.id);
 
@@ -206,12 +210,12 @@ export default function ProductsPage() {
               <Card key={product.id} className="p-3">
                 <div className="flex gap-3">
                   {/* Product Image */}
-                  <div className="w-20 h-20 bg-muted rounded-md overflow-hidden">
+                  <div className="w-20 h-20 bg-muted rounded-md flex items-center justify-center overflow-hidden">
                     {product.image_url ? (
                       <img 
                         src={product.image_url} 
                         alt={product.name}
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-contain"
                       />
                     ) : (
                       <div className="w-full h-full bg-muted flex items-center justify-center text-muted-foreground">
@@ -231,6 +235,11 @@ export default function ProductsPage() {
                         <p className="text-sm font-medium text-primary mt-1">
                           {formatPrice(product.price)}
                         </p>
+                        {product.is_notes_required && (
+                          <p className="text-xs italic text-red-800 mt-1">
+                            Notes are required.
+                          </p>
+                        )}
                       </div>
                       <div className="flex gap-2 flex-shrink-0">
                         <Button 
@@ -294,6 +303,7 @@ export default function ProductsPage() {
             price: editingProduct.price.toString(),
             category_id: editingProduct.category_id,
             image_url: editingProduct.image_url,
+            is_notes_required: editingProduct.is_notes_required,
           } : undefined}
         />
       </div>
